@@ -3,19 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css-tarjeta.css">
     <title>Tarjeta Holografica | Marte</title>
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: #170c31;
+        }
+
+        .container{
+            width: 40vw;
+            height: 60vh;
+            perspective: 1000px;
+            text-align: center;
+        }
+
+        .contenido{
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgb(64, 36, 32);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+            transition: transform .3s ease-in-out;
+            transform-style: preserve-3d;
+            position: relative;
+}
+
+        img{
+            aspect-ratio: 1/1;
+            width: 50%;
+            margin: 10%;
+        }
+
+        .contenido::before {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.4), transparent 70%);
+            mix-blend-mode: overlay;
+            transition: backgound-position .2s ease-in-out;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="contenido">
             <div class="imagen">
-                <img src="/assets/img/Marte.png" alt="Foto de marte">
+                <img src="/img/Marte.png" alt="Foto de marte">
             </div>
             <div class="titulo">Marte porque si</div>
             <div class="descripción">Hola que tal</div>
         </div>
     </div>
-    <script src="/js-tarjeta.js"></script>
+    <script>
+        const tarjeta = document.querySelector('.container');
+        const contenido = document.querySelector('.contenido');
+
+        tarjeta.addEventListener('mousemove', (e) => {
+            const rect = tarjeta.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = -(y - centerY) / 20;
+            const rotateY = (x - centerY) / 20;
+
+        contenido.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        contenido.style.transition = 'transform .1s ease'
+        });
+
+        tarjeta.addEventListener('mouselave', () => {
+            contenido.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            contenido.style.transition = 'transform .3 ease';
+        });
+
+    </script>
 </body>
 </html>
